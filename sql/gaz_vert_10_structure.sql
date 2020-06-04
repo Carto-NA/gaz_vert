@@ -28,23 +28,50 @@ CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_unites_metha (
 	id_metha varchar(8),
 	scenario varchar(10),
 	canton varchar(4),
-	tailleuunit varchar(4),
-	injection boolean default false,
 	annee_cible numeric,
-	coge boolean DEFAULT false,
+	taille_unite varchar(4),
+	taille_unite_libelle varchar(4),
+	injection boolean default false,
+	cogeneration boolean DEFAULT false,
 	power2gas boolean DEFAULT false,
 	niveau varchar(10),
 	techno varchar(50),
 	levee_contrainte varchar(100),
-  div_commentaires text,
+  	commentaires text,
 	annee_donnees varchar(4),
 	date_import date,
 	date_maj date,
-  geom_valide  boolean DEFAULT false,
-  geom geometry(POINT, 2154),
+  	geom_valide  boolean DEFAULT false,
+  	geom geometry(POINT, 2154),
 	CONSTRAINT m_env_gaz_vert_au_r6_d1_unites_metha_pkey PRIMARY KEY (id),
-  CONSTRAINT m_env_gaz_vert_au_r6_d1_unites_metha_uniq UNIQUE (id_metha)
+  	CONSTRAINT m_env_gaz_vert_au_r6_d1_unites_metha_uniq UNIQUE (id_metha)
 );
+
+-- 
+COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_unites_metha IS 'Resau de transport du gaz vert en Nouvelle-Aquitaine';
+
+--
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.id IS 'Identifiant';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.id_metha IS 'Identifiant de l''unité de méthanisation';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.scenario IS 'Scénario';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.canton IS 'Canon d''appartenance';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.annee_cible IS 'Année de mise en oeuvre';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.taille_unite IS 'Taille de l''unité';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.taille_unite_libelle IS 'Libellé de la taille de l''unité';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.injection IS 'Unité en injection';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.cogeneration IS 'Unité cogénératrice';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.power2gas IS 'Convertion éléctrique en gaz';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.niveau IS 'Niveau';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.techno IS 'Technologie';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.levee_contrainte IS 'Levée de contrainte';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.commentaires IS 'Commentaires';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.annee_donnees IS 'Année de la données pour l''historisation';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.date_maj IS 'Date de mise à jour de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.geom_valide IS 'Géométrie validée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.geom IS 'Géométrie point';
+
+--
 CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_unites_metha_geom ON met_env.m_env_gaz_vert_au_r6_d1_unites_metha USING gist (geom);
 
 
@@ -55,21 +82,27 @@ CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_unites_metha_geom ON met_env.m_env_gaz
 CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_transport (
 	id varchar NOT NULL,
 	scenario varchar(10),
-  div_commentaires text,
+  	commentaires text,
 	annee_donnees varchar(4),
 	date_import date,
 	date_maj date,
-  geom_valide  boolean DEFAULT false,
-  geom geometry(MULTIPOLYGON, 2154),
+  	geom_valide  boolean DEFAULT false,
+  	geom geometry(MULTIPOLYGON, 2154),
 	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_transport_pkey PRIMARY KEY (id)
 );
 
 -- 
-COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_transport IS 'Resau de transport du gaz vert en Nouvelle-Aquitaine';
+COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_transport IS 'Reseau de transport du gaz vert en Nouvelle-Aquitaine';
 
 --
 COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_transport.id IS 'Identifiant';
-
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_transport.scenario IS 'Scénario';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_transport.commentaires IS 'Commentaires';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_transport.annee_donnees IS 'Année de la données pour l''historisation';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_transport.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_transport.date_maj IS 'Date de mise à jour de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_transport.geom_valide IS 'Géométrie validée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_transport.geom IS 'Géométrie polygone';
 
 --
 CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_reseau_transport_geom ON met_env.m_env_gaz_vert_au_r6_d1_reseau_transport USING gist (geom);
@@ -80,21 +113,21 @@ CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_reseau_transport_geom ON met_env.m_env
 
 -- DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_rebours_crees;
 CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_rebours_crees (
-	id serial NOT NULL, -- Identifiant
-  code varchar(10), -- Code du rebour
-	scenario varchar(10), -- Nom du scénario
-  statut varchar(10), -- Statut du rebours (en fonctionnement/à créer/Non renseigné)
-	enfant varchar(80), --Enfant du rebour
-	parent varchar(80), -- Parent du rebour
-	type_rebour varchar(80), -- Type de rebour
+	id serial NOT NULL,
+	code varchar(10),
+	scenario varchar(10),
+	statut varchar(10),
+	enfant varchar(80),
+	parent varchar(80),
+	type_rebour varchar(80),
 	annee_cible numeric,
-	prepositio varchar(80),
-  commentaires text, -- Commentaires
-	annee_donnees varchar(4), -- Année de la données
-	date_import date, -- Date d'import de la données
-	date_maj date, -- Date de mise à jour de la données
-  geom_valide  boolean DEFAULT false, -- La géometrie est-elle validée
-  geom geometry(POINT, 2154), -- Géometrie : point
+	preposition varchar(80),
+ 	commentaires text,
+	annee_donnees varchar(4),
+	date_import date,
+	date_maj date,
+	geom_valide  boolean DEFAULT false,
+  	geom geometry(POINT, 2154),
 	CONSTRAINT m_env_gaz_vert_au_r6_d1_rebours_crees_pkey PRIMARY KEY (id)
 );
 
@@ -102,7 +135,21 @@ CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_rebours_crees (
 COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_rebours_crees IS 'Localisation des rebours en Nouvelle-Aquitaine';
 
 --
-COMMENT ON COLUMN met_eco.m_eco_methanisation_na_geo.id IS 'Identifiant';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.id IS 'Identifiant';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.code IS 'Code du rebour';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.scenario IS 'Scénario';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.statut IS 'Statut du rebours (en fonctionnement/à créer/Non renseigné)';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.enfant IS 'Enfant du rebour';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.parent IS 'Parent du rebour';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.type_rebour IS 'Type de rebour';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.annee_cible IS 'Année de mise en oeuvre';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.preposition IS '';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.commentaires IS 'Commentaires';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.annee_donnees IS 'Année de la données pour l''historisation';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.date_maj IS 'Date de mise à jour de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.geom_valide IS 'Géométrie validée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.geom IS 'Géométrie polygone';
 
 --
 CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_rebours_crees_geom ON met_env.m_env_gaz_vert_au_r6_d1_rebours_crees USING gist (geom);
