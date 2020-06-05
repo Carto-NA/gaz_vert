@@ -158,6 +158,65 @@ CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_rebours_crees_geom ON met_env.m_env_ga
 ------------------------------------------------------------------------
 -- Table: met_env.
 
+-- DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb;
+CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb (
+	id varchar NOT NULL,
+	scenario varchar(10),
+ 	commentaires text,
+	annee_donnees varchar(4),
+	date_import date,
+	date_maj date,
+	geom_valide  boolean DEFAULT false,
+	geom geometry(MULTIPOLYGON, 2154),
+	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_mpb_pkey PRIMARY KEY (id)
+);
+
+-- 
+COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb IS 'Réseau de transport MPB en Nouvelle-Aquitaine';
+
+--
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.id IS 'Identifiant';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.scenario IS 'Scénario';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.commentaires IS 'Commentaires';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.annee_donnees IS 'Année de la données pour l''historisation';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.date_maj IS 'Date de mise à jour de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.geom_valide IS 'Géométrie validée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.geom IS 'Géométrie polygone';
+
+--
+CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_reseau_mpb_geom ON met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb USING gist (geom);
+
 
 ------------------------------------------------------------------------
--- Table: met_env.
+-- Table: met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc
+
+-- DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc;
+
+CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc (
+	id varchar NOT NULL,
+	scenario varchar(10),
+	commentaires text,
+	annee_donnees varchar(4),
+	date_import date,
+	date_maj date,
+	geom_valide  boolean DEFAULT false,
+	geom geometry(MULTIPOLYGON, 2154),
+	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_mpc_pkey PRIMARY KEY (id)
+);
+
+-- 
+COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc IS 'Réseau de transport MPC en Nouvelle-Aquitaine';
+
+--
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.id IS 'Identifiant';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.scenario IS 'Scénario';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.commentaires IS 'Commentaires';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.annee_donnees IS 'Année de la données pour l''historisation';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.date_maj IS 'Date de mise à jour de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.geom_valide IS 'Géométrie validée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.geom IS 'Géométrie polygone';
+
+--
+CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_reseau_mpc_geom ON met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc USING gist (geom);
