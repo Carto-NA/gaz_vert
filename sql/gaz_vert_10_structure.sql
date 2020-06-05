@@ -75,12 +75,15 @@ COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_unites_metha.geom IS 'Géomét
 CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_unites_metha_geom ON met_env.m_env_gaz_vert_au_r6_d1_unites_metha USING gist (geom);
 
 
+
+
+
 ------------------------------------------------------------------------
 -- Table: met_env.m_env_gaz_vert_au_r6_d1_reseau_transport
 
 -- DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_transport;
 CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_transport (
-	id varchar NOT NULL,
+	id serial NOT NULL,
 	scenario varchar(10),
   	commentaires text,
 	annee_donnees varchar(4),
@@ -154,13 +157,20 @@ COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.geom IS 'Géomé
 --
 CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_rebours_crees_geom ON met_env.m_env_gaz_vert_au_r6_d1_rebours_crees USING gist (geom);
 
+-- On ajout les données
+INSERT INTO met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo (code, scenario, statut, enfant, parent, type_rebour, annee_cible, preposition, 
+commentaires, annee_donnees, date_import, date_maj, geom_valide, geom) 
+SELECT 'NA2020'||id, scenario, null, enfant, parent, typerebour, annee_cibl, prepositio, 
+null, '2020', now(), null, false, geom
+FROM z_maj.au_r6_d1_rebours_crees;
+
 
 ------------------------------------------------------------------------
--- Table: met_env.
+-- Table: met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb
 
--- DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb;
-CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb (
-	id varchar NOT NULL,
+-- DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo;
+CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo (
+	id serial NOT NULL,
 	scenario varchar(10),
  	commentaires text,
 	annee_donnees varchar(4),
@@ -168,33 +178,38 @@ CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb (
 	date_maj date,
 	geom_valide  boolean DEFAULT false,
 	geom geometry(MULTIPOLYGON, 2154),
-	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_mpb_pkey PRIMARY KEY (id)
+	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_mpb_geo_pkey PRIMARY KEY (id)
 );
 
 -- 
-COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb IS 'Réseau de transport MPB en Nouvelle-Aquitaine';
+COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo IS 'Réseau de transport MPB en Nouvelle-Aquitaine';
 
 --
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.id IS 'Identifiant';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.scenario IS 'Scénario';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.commentaires IS 'Commentaires';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.annee_donnees IS 'Année de la données pour l''historisation';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.date_import IS 'Date d''import de la donnée';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.date_maj IS 'Date de mise à jour de la donnée';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.geom_valide IS 'Géométrie validée';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb.geom IS 'Géométrie polygone';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo.id IS 'Identifiant';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo.scenario IS 'Scénario';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo.commentaires IS 'Commentaires';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo.annee_donnees IS 'Année de la données pour l''historisation';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo.date_maj IS 'Date de mise à jour de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo.geom_valide IS 'Géométrie validée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo.geom IS 'Géométrie polygone';
 
 --
-CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_reseau_mpb_geom ON met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb USING gist (geom);
+CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_reseau_mpb_geo_geom ON met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo USING gist (geom);
+
+-- On ajout les données
+INSERT INTO met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo (
+scenario, commentaires, annee_donnees, date_import, date_maj, geom_valide, geom)
+SELECT scenario, null, '2020', now(), null, false, geom 
+FROM z_maj.au_r6_d1_reseau_mpb;
 
 
 ------------------------------------------------------------------------
--- Table: met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc
+-- Table: met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo
 
--- DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc;
-
-CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc (
-	id varchar NOT NULL,
+DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo;
+CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo (
+	id serial NOT NULL,
 	scenario varchar(10),
 	commentaires text,
 	annee_donnees varchar(4),
@@ -202,21 +217,26 @@ CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc (
 	date_maj date,
 	geom_valide  boolean DEFAULT false,
 	geom geometry(MULTIPOLYGON, 2154),
-	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_mpc_pkey PRIMARY KEY (id)
+	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_mpc_geo_pkey PRIMARY KEY (id)
 );
 
 -- 
-COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc IS 'Réseau de transport MPC en Nouvelle-Aquitaine';
+COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo IS 'Réseau de transport MPC en Nouvelle-Aquitaine';
 
 --
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.id IS 'Identifiant';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.scenario IS 'Scénario';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.commentaires IS 'Commentaires';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.annee_donnees IS 'Année de la données pour l''historisation';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.date_import IS 'Date d''import de la donnée';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.date_maj IS 'Date de mise à jour de la donnée';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.geom_valide IS 'Géométrie validée';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc.geom IS 'Géométrie polygone';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.id IS 'Identifiant';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.scenario IS 'Scénario';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.commentaires IS 'Commentaires';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.annee_donnees IS 'Année de la données pour l''historisation';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.date_maj IS 'Date de mise à jour de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.geom_valide IS 'Géométrie validée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.geom IS 'Géométrie polygone';
 
 --
-CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_reseau_mpc_geom ON met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc USING gist (geom);
+CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_reseau_mpc_geo_geom ON met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo USING gist (geom);
+
+-- On ajout les données
+INSERT INTO met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo (
+scenario, commentaires, annee_donnees, date_import, date_maj, geom_valide, geom) 
+SELECT scenario, null, '2020', now(), null, false, geom FROM z_maj.au_r6_d1_reseau_mpc;
