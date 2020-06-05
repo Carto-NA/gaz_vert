@@ -137,7 +137,7 @@ WHERE taille_unite = 'U15';
 
 --DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_transport_geo;
 CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_transport_geo (
-	id serial NOT NULL,
+	id varchar NOT NULL,
 	scenario varchar(10) NULL,
 	commentaires text NULL,
 	annee_donnees varchar(4) NULL,
@@ -145,7 +145,8 @@ CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_transport_geo (
 	date_maj date NULL,
 	geom_valide bool NULL DEFAULT false,
 	geom geometry(MULTIPOLYGON, 2154) NULL,
-	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_transport_geo_pkey PRIMARY KEY (id)
+	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_transport_geo_pkey PRIMARY KEY (id),
+	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_transport_geo_uniq UNIQUE (id,annee_donnees)
 );
 
 -- 
@@ -173,8 +174,8 @@ FROM z_maj.au_r6_d1_reseau_transport;
 ------------------------------------------------------------------------
 -- Table: met_env.m_env_gaz_vert_au_r6_d1_rebours_crees
 
--- DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_rebours_crees;
-CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_rebours_crees (
+-- DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo;
+CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo (
 	id serial NOT NULL,
 	code varchar(10),
 	scenario varchar(10),
@@ -190,28 +191,31 @@ CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_rebours_crees (
 	date_maj date,
 	geom_valide  boolean DEFAULT false,
   	geom geometry(POINT, 2154),
-	CONSTRAINT m_env_gaz_vert_au_r6_d1_rebours_crees_pkey PRIMARY KEY (id)
+	CONSTRAINT m_env_gaz_vert_au_r6_d1_rebours_crees_geo_pkey PRIMARY KEY (id)
 );
 
 -- 
-COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_rebours_crees IS 'Localisation des rebours en Nouvelle-Aquitaine';
+COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo IS 'Localisation des rebours en Nouvelle-Aquitaine';
 
 --
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.id IS 'Identifiant';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.code IS 'Code du rebour';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.scenario IS 'Scénario';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.statut IS 'Statut du rebours (en fonctionnement/à créer/Non renseigné)';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.enfant IS 'Enfant du rebour';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.parent IS 'Parent du rebour';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.type_rebour IS 'Type de rebour';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.annee_cible IS 'Année de mise en oeuvre';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.preposition IS '';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.commentaires IS 'Commentaires';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.annee_donnees IS 'Année de la données pour l''historisation';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.date_import IS 'Date d''import de la donnée';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.date_maj IS 'Date de mise à jour de la donnée';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.geom_valide IS 'Géométrie validée';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees.geom IS 'Géométrie polygone';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.id IS 'Identifiant';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.code IS 'Code du rebour';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.scenario IS 'Scénario';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.statut IS 'Statut du rebours (en fonctionnement/à créer/Non renseigné)';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.enfant IS 'Enfant du rebour';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.parent IS 'Parent du rebour';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.type_rebour IS 'Type de rebour';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.annee_cible IS 'Année de mise en oeuvre';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.preposition IS '';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.commentaires IS 'Commentaires';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.annee_donnees IS 'Année de la données pour l''historisation';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.date_maj IS 'Date de mise à jour de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.geom_valide IS 'Géométrie validée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo.geom IS 'Géométrie polygone';
+
+--
+CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_rebours_crees_geo_geom ON met_env.m_env_gaz_vert_au_r6_d1_rebours_crees_geo USING gist (geom);
 
 --
 CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_rebours_crees_geom ON met_env.m_env_gaz_vert_au_r6_d1_rebours_crees USING gist (geom);
@@ -225,11 +229,11 @@ FROM z_maj.au_r6_d1_rebours_crees;
 
 
 ------------------------------------------------------------------------
--- Table: met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb
+-- Table: met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo
 
 -- DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo;
 CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo (
-	id serial NOT NULL,
+	id varchar NOT NULL,
 	scenario varchar(10),
  	commentaires text,
 	annee_donnees varchar(4),
@@ -237,7 +241,8 @@ CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo (
 	date_maj date,
 	geom_valide  boolean DEFAULT false,
 	geom geometry(MULTIPOLYGON, 2154),
-	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_mpb_geo_pkey PRIMARY KEY (id)
+	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_mpb_geo_pkey PRIMARY KEY (id),
+	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_mpb_geo_uniq UNIQUE (id, annee_donnees)
 );
 
 -- 
@@ -258,8 +263,8 @@ CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_reseau_mpb_geo_geom ON met_env.m_env_g
 
 -- On ajout les données
 INSERT INTO met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo (
-scenario, commentaires, annee_donnees, date_import, date_maj, geom_valide, geom)
-SELECT scenario, null, '2020', now(), null, false, geom 
+id, scenario, commentaires, annee_donnees, date_import, date_maj, geom_valide, geom)
+SELECT id, scenario, null, '2020', now(), null, false, geom 
 FROM z_maj.au_r6_d1_reseau_mpb;
 
 
@@ -268,7 +273,7 @@ FROM z_maj.au_r6_d1_reseau_mpb;
 
 DROP TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo;
 CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo (
-	id serial NOT NULL,
+	id varchar NOT NULL,
 	scenario varchar(10),
 	commentaires text,
 	annee_donnees varchar(4),
@@ -276,7 +281,8 @@ CREATE TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo (
 	date_maj date,
 	geom_valide  boolean DEFAULT false,
 	geom geometry(MULTIPOLYGON, 2154),
-	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_mpc_geo_pkey PRIMARY KEY (id)
+	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_mpc_geo_pkey PRIMARY KEY (id),
+	CONSTRAINT m_env_gaz_vert_au_r6_d1_reseau_mpc_geo_uniq UNIQUE (id, annee_donnees)
 );
 
 -- 
@@ -297,5 +303,5 @@ CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_reseau_mpc_geo_geom ON met_env.m_env_g
 
 -- On ajout les données
 INSERT INTO met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo (
-scenario, commentaires, annee_donnees, date_import, date_maj, geom_valide, geom) 
-SELECT scenario, null, '2020', now(), null, false, geom FROM z_maj.au_r6_d1_reseau_mpc;
+id, scenario, commentaires, annee_donnees, date_import, date_maj, geom_valide, geom) 
+SELECT id, scenario, null, '2020', now(), null, false, geom FROM z_maj.au_r6_d1_reseau_mpc;
