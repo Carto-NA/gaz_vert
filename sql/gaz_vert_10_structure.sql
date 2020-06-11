@@ -335,3 +335,22 @@ SELECT
 FROM z_maj."20200611 Fichier carto_raccordement_commune"
 inner join ref_adminexpress.r_admexp_commune_fr 
 on cast(code_commune_insee as varchar) = insee_com;
+
+
+------------------------------------------------------------------------
+-- DROP TABLE met_env.m_env_gaz_vert_canton_ressource";
+CREATE TABLE met_env.m_env_gaz_vert_canton_ressource (
+	id serial NOT NULL,
+	numreg character varying(2),
+	numdep character varying(2),
+	numcan character varying(4),
+	dejection_animale numeric,
+	residu_culture numeric,
+	cimse numeric,
+	residu_iaa numeric,
+	biodechet numeric,
+	herbe numeric,
+	algues numeric,
+	CONSTRAINT m_env_gaz_vert_canton_ressource_pkey" PRIMARY KEY (id),
+	CONSTRAINT m_env_gaz_vert_canton_ressource_uniq UNIQUE (numcan)
+);
