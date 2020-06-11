@@ -28,3 +28,7 @@ GRANT ALL ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpb_geo TO "pre-sig-ro
 -- Tables : met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo
 GRANT ALL ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo TO "pre-sig-usr";
 GRANT ALL ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo TO "pre-sig-ro";
+
+-- Tables : met_env.m_env_gaz_vert_etat_commune
+GRANT ALL ON TABLE met_env.m_env_gaz_vert_etat_commune TO "pre-sig-usr";
+GRANT SELECT ON TABLE met_env.m_env_gaz_vert_etat_commune TO "pre-sig-ro";
