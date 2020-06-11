@@ -305,3 +305,33 @@ CREATE INDEX sidx_m_env_gaz_vert_au_r6_d1_reseau_mpc_geo_geom ON met_env.m_env_g
 INSERT INTO met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo (
 id, scenario, commentaires, annee_donnees, date_import, date_maj, geom_valide, geom) 
 SELECT id, scenario, null, '2020', now(), null, false, geom FROM z_maj.au_r6_d1_reseau_mpc;
+
+
+------------------------------------------------------------------------
+-- DROP TABLE met_env.m_env_gaz_vert_etat_commune;
+CREATE TABLE met_env.m_env_gaz_vert_etat_commune (
+	id serial NOT NULL,
+	nomcom character varying(150),
+	numcom character varying(5),
+	code_postal character varying(5),
+	commune_desservie_grd boolean DEFAULT false,
+	commune_traversee_grt boolean DEFAULT false,
+	commune_desservie_scenario_gaz_vert boolean DEFAULT false,
+	CONSTRAINT m_env_gaz_vert_etat_commune_pkey PRIMARY KEY (id),
+	CONSTRAINT m_env_gaz_vert_etat_commune_uniq UNIQUE (numcom, code_postal)
+);
+
+
+--
+INSERT INTO met_env.m_env_gaz_vert_etat_commune (
+	nomcom, numcom, code_postal, 
+	commune_desservie_grd, commune_traversee_grt, commune_desservie_scenario_gaz_vert
+)
+SELECT 
+	DISTINCT nom_com, trim(cast(code_commune_insee as varchar)), null,
+	CASE "commune déjà desservie par un grd" WHEN 'OUI' THEN true WHEN 'NON' THEN false ELSE null END,
+	CASE "commune traversée par un grt" WHEN 'OUI' THEN true WHEN 'NON' THEN false ELSE null END,
+	CASE "commune nouvellement desservie grace au scénario 100% gaz vert" WHEN 'OUI' THEN true WHEN 'NON' THEN false ELSE null END
+FROM z_maj."20200611 Fichier carto_raccordement_commune"
+inner join ref_adminexpress.r_admexp_commune_fr 
+on cast(code_commune_insee as varchar) = insee_com;
