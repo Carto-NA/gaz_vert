@@ -317,28 +317,48 @@ CREATE TABLE met_env.m_env_gaz_vert_etat_commune (
 	commune_desservie_grd boolean DEFAULT false,
 	commune_traversee_grt boolean DEFAULT false,
 	commune_desservie_scenario_gaz_vert boolean DEFAULT false,
+	commentaires text,
+	annee_donnees varchar(4),
+	date_import date,
+	date_maj date,
 	CONSTRAINT m_env_gaz_vert_etat_commune_pkey PRIMARY KEY (id),
 	CONSTRAINT m_env_gaz_vert_etat_commune_uniq UNIQUE (numcom, code_postal)
 );
 
+-- 
+COMMENT ON TABLE met_env.m_env_gaz_vert_etat_commune IS 'Etat de raccordement des communes concernés';
+
+--
+COMMENT ON COLUMN met_env.m_env_gaz_vert_etat_commune.id IS 'Identifiant';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_etat_commune.nomcom IS 'Nom de commune';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_etat_commune.numcom IS 'Code INSEE de la commune';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_etat_commune.code_postal IS 'Code postal de la commune';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_etat_commune.commune_desservie_grd IS 'Commune raccordée au réseau par un GRDF';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_etat_commune.commune_traversee_grt IS 'Commune traversée par un GRT';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_etat_commune.commune_desservie_scenario_gaz_vert IS 'Commune raccordée grâce au scénario Gaz Vert';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_etat_commune.commentaires IS 'Commentaires';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_etat_commune.annee_donnees IS 'Année de la données pour l''historisation';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_etat_commune.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_etat_commune.date_maj IS 'Date de mise à jour de la donnée';
 
 --
 INSERT INTO met_env.m_env_gaz_vert_etat_commune (
 	nomcom, numcom, code_postal, 
-	commune_desservie_grd, commune_traversee_grt, commune_desservie_scenario_gaz_vert
+	commune_desservie_grd, commune_traversee_grt, commune_desservie_scenario_gaz_vert, annee_donnees, date_import
 )
 SELECT 
 	DISTINCT nom_com, trim(cast(code_commune_insee as varchar)), null,
 	CASE "commune déjà desservie par un grd" WHEN 'OUI' THEN true WHEN 'NON' THEN false ELSE null END,
 	CASE "commune traversée par un grt" WHEN 'OUI' THEN true WHEN 'NON' THEN false ELSE null END,
-	CASE "commune nouvellement desservie grace au scénario 100% gaz vert" WHEN 'OUI' THEN true WHEN 'NON' THEN false ELSE null END
+	CASE "commune nouvellement desservie grace au scénario 100% gaz vert" WHEN 'OUI' THEN true WHEN 'NON' THEN false ELSE null END,
+	'2020', now()
 FROM z_maj."20200611 Fichier carto_raccordement_commune"
 inner join ref_adminexpress.r_admexp_commune_fr 
 on cast(code_commune_insee as varchar) = insee_com;
 
 
 ------------------------------------------------------------------------
--- DROP TABLE met_env.m_env_gaz_vert_canton_ressource";
+-- DROP TABLE met_env.m_env_gaz_vert_canton_ressource;
 CREATE TABLE met_env.m_env_gaz_vert_canton_ressource (
 	id serial NOT NULL,
 	numreg character varying(2),
@@ -351,6 +371,36 @@ CREATE TABLE met_env.m_env_gaz_vert_canton_ressource (
 	biodechet numeric,
 	herbe numeric,
 	algues numeric,
-	CONSTRAINT m_env_gaz_vert_canton_ressource_pkey" PRIMARY KEY (id),
+	commentaires text,
+	annee_donnees varchar(4),
+	date_import date,
+	date_maj date,
+	CONSTRAINT m_env_gaz_vert_canton_ressource_pkey PRIMARY KEY (id),
 	CONSTRAINT m_env_gaz_vert_canton_ressource_uniq UNIQUE (numcan)
 );
+
+-- 
+COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo IS 'Réseau de transport MPC en Nouvelle-Aquitaine';
+
+--
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.id IS 'Identifiant';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.scenario IS 'Scénario';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.commentaires IS 'Commentaires';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.annee_donnees IS 'Année de la données pour l''historisation';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.date_maj IS 'Date de mise à jour de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.geom_valide IS 'Géométrie validée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.geom IS 'Géométrie polygone';
+
+--
+INSERT INTO met_env.m_env_gaz_vert_canton_ressource (
+	numreg, numdep, numcan, 
+	dejection_animale, residu_culture, cimse, residu_iaa, 
+	biodechet, herbe, algues, 
+	annee_donnees, date_import
+) 
+SELECT 
+	"code.region", code_departement, canton, 
+	cast(replace("déjections animales",',','.') as numeric), cast(replace("résidus de cultre",',','.') as numeric), 
+	cast(replace(cimse,',','.') as numeric), cast(replace("résidus d'iaa",',','.') as numeric), cast(replace(biodéchets,',','.') as numeric), cast(replace(herbe,',','.') as numeric), cast(replace(algues,',','.') as numeric),
+	'2020', now() FROM z_maj."20200611 Fichier carto_ressource_metha_canton";
