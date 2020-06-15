@@ -3,8 +3,8 @@
 Dans le cadre du développement des énergies vertes, voici l'ensemble des éléments constituant la mise en oeuvre de la base de données urbanisées sur les thématiques environnement, économique ainsi que l'exploitation de ces données dans les différentes applications :
 
 * Statut
-  - [x] à rédiger
-  - [ ] en cours de rédaction
+  - [ ] à rédiger
+  - [x] en cours de rédaction
   - [ ] relecture
   - [ ] finaliser
   - [ ] révision
