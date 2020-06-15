@@ -364,6 +364,7 @@ CREATE TABLE met_env.m_env_gaz_vert_canton_ressource (
 	numreg character varying(2),
 	numdep character varying(2),
 	numcan character varying(4),
+	nomcan character varying(150),
 	dejection_animale numeric,
 	residu_culture numeric,
 	cimse numeric,
@@ -376,25 +377,33 @@ CREATE TABLE met_env.m_env_gaz_vert_canton_ressource (
 	date_import date,
 	date_maj date,
 	CONSTRAINT m_env_gaz_vert_canton_ressource_pkey PRIMARY KEY (id),
-	CONSTRAINT m_env_gaz_vert_canton_ressource_uniq UNIQUE (numcan)
+	CONSTRAINT m_env_gaz_vert_canton_ressource_uniq UNIQUE (numcan, annee_donnees)
 );
 
 -- 
-COMMENT ON TABLE met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo IS 'Réseau de transport MPC en Nouvelle-Aquitaine';
+COMMENT ON TABLE met_env.m_env_gaz_vert_canton_ressource IS 'Réseau de transport MPC en Nouvelle-Aquitaine';
 
 --
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.id IS 'Identifiant';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.scenario IS 'Scénario';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.commentaires IS 'Commentaires';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.annee_donnees IS 'Année de la données pour l''historisation';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.date_import IS 'Date d''import de la donnée';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.date_maj IS 'Date de mise à jour de la donnée';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.geom_valide IS 'Géométrie validée';
-COMMENT ON COLUMN met_env.m_env_gaz_vert_au_r6_d1_reseau_mpc_geo.geom IS 'Géométrie polygone';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.id IS 'Identifiant';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.numreg IS 'Code de la région';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.numdep IS 'Code du département';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.numcan IS 'Code du canton';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.nomcan IS 'Nom du canton';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.dejection_animale IS 'Ressource méthanisation en déjéction animale';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.residu_culture IS 'Ressource méthanisation en résidu de culture';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.cimse IS 'Ressource méthanisation en CIMSE';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.residu_iaa IS 'Ressource méthanisation en résidu IAA';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.biodechet IS 'Ressource méthanisation en biodéchet';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.herbe IS 'Ressource méthanisation en herbe';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.algues IS 'Ressource méthanisation en algues';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.commentaires IS 'Commentaires';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.annee_donnees IS 'Année de la données pour l''historisation';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.date_import IS 'Date d''import de la donnée';
+COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.date_maj IS 'Date de mise à jour de la donnée';
 
 --
 INSERT INTO met_env.m_env_gaz_vert_canton_ressource (
-	numreg, numdep, numcan, 
+	numreg, numdep, numcan, nomcan,
 	dejection_animale, residu_culture, cimse, residu_iaa, 
 	biodechet, herbe, algues, 
 	annee_donnees, date_import
@@ -403,4 +412,7 @@ SELECT
 	"code.region", code_departement, canton, 
 	cast(replace("déjections animales",',','.') as numeric), cast(replace("résidus de cultre",',','.') as numeric), 
 	cast(replace(cimse,',','.') as numeric), cast(replace("résidus d'iaa",',','.') as numeric), cast(replace(biodéchets,',','.') as numeric), cast(replace(herbe,',','.') as numeric), cast(replace(algues,',','.') as numeric),
-	'2020', now() FROM z_maj."20200611 Fichier carto_ressource_metha_canton";
+	'2020', now() 
+FROM z_maj."20200611 Fichier carto_ressource_metha_canton"
+INNER JOIN geo.z_canton_na
+ON canton = numcan ;
