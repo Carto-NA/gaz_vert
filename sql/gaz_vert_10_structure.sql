@@ -402,8 +402,9 @@ COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.date_import IS 'Date d
 COMMENT ON COLUMN met_env.m_env_gaz_vert_canton_ressource.date_maj IS 'Date de mise à jour de la donnée';
 
 --
+--TRUNCATE TABLE met_env.m_env_gaz_vert_canton_ressource;
 INSERT INTO met_env.m_env_gaz_vert_canton_ressource (
-	numreg, numdep, numcan, nomcan,
+	numreg, numdep, numcan, 
 	dejection_animale, residu_culture, cimse, residu_iaa, 
 	biodechet, herbe, algues, 
 	annee_donnees, date_import
@@ -411,8 +412,8 @@ INSERT INTO met_env.m_env_gaz_vert_canton_ressource (
 SELECT 
 	"code.region", code_departement, canton, 
 	cast(replace("déjections animales",',','.') as numeric), cast(replace("résidus de cultre",',','.') as numeric), 
-	cast(replace(cimse,',','.') as numeric), cast(replace("résidus d'iaa",',','.') as numeric), cast(replace(biodéchets,',','.') as numeric), cast(replace(herbe,',','.') as numeric), cast(replace(algues,',','.') as numeric),
+	cast(replace(cimse,',','.') as numeric), cast(replace("résidus d'iaa",',','.') as numeric), 
+	cast(replace(biodéchets,',','.') as numeric), cast(replace(herbe,',','.') as numeric), 
+	cast(replace(algues,',','.') as numeric),
 	'2020', now() 
-FROM z_maj."20200611 Fichier carto_ressource_metha_canton"
-INNER JOIN geo.z_canton_na
-ON canton = numcan ;
+FROM z_maj."20200611 Fichier carto_ressource_metha_canton";
